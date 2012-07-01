@@ -29,7 +29,7 @@ public class SayImpl implements Say {
 		boolean isPM = params.substring(params.length()-2, params.length()).equals("PM");
 		if(!options.isAdmin(sender)) { restrictions(chan, sender, isPM); return; }
 		//whether pm or message, it will still say it on the channel
-		sendMessage(chan, sender, params.substring(0, params.length()-2));
+		sendMessage(chan, sender, params);
 	}
 
 	private void restrictions(String channel, String sender, boolean isPM) {
