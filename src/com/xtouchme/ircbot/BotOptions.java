@@ -13,7 +13,7 @@ import java.util.TimeZone;
 
 public class BotOptions implements java.io.Serializable {
 	
-	private static final long serialVersionUID = 8394633204564752508L;
+	private static final long serialVersionUID = 1316118171194822528L;
 	
 	ArrayList<String> admin;
 	ArrayList<String> owner;
@@ -28,6 +28,7 @@ public class BotOptions implements java.io.Serializable {
 	
 	File optionsFile = null;
 	private static BotOptions options = null;
+	boolean shouldShutUp = false;
 	
 	private BotOptions() {}
 	
@@ -115,6 +116,14 @@ public class BotOptions implements java.io.Serializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void shouldShutUp(boolean shouldShutUp) {
+		this.shouldShutUp = shouldShutUp;
+	}
+	
+	public boolean shouldShutUp() {
+		return shouldShutUp;
 	}
 	
 	public void setFile(String filename) {

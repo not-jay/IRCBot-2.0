@@ -23,7 +23,7 @@ public class IRCBot extends PircBot {
 	@Override
 	protected void onMessage(String channel, String sender, String login,
 			String hostname, String message) {
-		if(options.shouldIgnore(sender)) return;
+		if(options.shouldIgnore(sender) || (options.shouldShutUp() && !options.isSuperAdmin(sender))) return;
 		if(message.startsWith("?")) {
 			if(!options.isOwner(sender)) {
 				sendMessage(channel, "You don't have enough previlages to perform this task");

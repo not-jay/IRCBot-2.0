@@ -26,10 +26,25 @@ public class SayImpl implements Say {
 	
 	@Override
 	public void run(String params, String chan, String sender, BotOptions options) {
+		boolean isPM = params.substring(params.length()-2, params.length()).equals("PM");
+		if(!options.isAdmin(sender)) { restrictions(chan, sender, isPM); return; }
 		//whether pm or message, it will still say it on the channel
-		bot.sendMessage(chan, params.substring(0, params.length()-2));
+		sendMessage(chan, sender, params.substring(0, params.length()-2));
+	}
+
+	private void restrictions(String channel, String sender, boolean isPM) {
+		sendMessage(channel, sender, "You don't have enough previliges to perform this task"+((isPM)?"PM":"NM"));
 	}
 	
+	private void sendMessage(String channel, String sender, String sendWhat) {
+		//If its a normal message
+		if(sendWhat.substring(sendWhat.length()-2, sendWhat.length()).equals("NM")) {
+			bot.sendMessage(channel, sendWhat.substring(0, sendWhat.length()-2));
+		} else { //Otherwise, its a pm
+			bot.sendNotice(sender, sendWhat.substring(0, sendWhat.length()-2));
+		}
+	}
+
 	@Override
 	public void setCommandStart(String[] commandStart) {
 		for(String s : commandStart) {

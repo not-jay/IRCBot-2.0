@@ -32,10 +32,20 @@ public class DCImpl implements DC {
 		}
 		//whether pm or message, it will still say it on the channel
 		if(params.substring(0, params.length()-2).length() > 0) {
-			bot.sendMessage(chan, params.substring(0, params.length()-2));
+			bot.sendMessage(chan, "Quitting("+params.substring(0, params.length()-2)+")");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			bot.quitServer(params.substring(0, params.length()-2));
 		} else {
-			bot.sendMessage(chan, "See you guys later... Creature Caaaaats!!!~");
+			bot.sendMessage(chan, "Quitting(See you guys later... Creature Caaaaats!!!~)");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			bot.quitServer("See you guys later... Creature Caaaaats!!!~");
 		}
 	}

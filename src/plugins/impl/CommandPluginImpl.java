@@ -15,10 +15,13 @@ import plugins.Choose;
 import plugins.CommandPlugin;
 import plugins.Countdown;
 import plugins.DC;
+import plugins.Help;
 import plugins.Me;
 import plugins.MemUsage;
+import plugins.QDB;
 import plugins.Say;
 import plugins.Set;
+import plugins.ShutUp;
 import plugins.Slap;
 import plugins.SystemInfo;
 
@@ -69,6 +72,9 @@ public class CommandPluginImpl implements CommandPlugin {
 		SystemInfo sys = pluginManager.getPlugin(SystemInfo.class);
 		MemUsage mem = pluginManager.getPlugin(MemUsage.class);
 		Choose ch = pluginManager.getPlugin(Choose.class);
+		QDB qdb = pluginManager.getPlugin(QDB.class);
+		ShutUp su = pluginManager.getPlugin(ShutUp.class);
+		Help h = pluginManager.getPlugin(Help.class);
 		
 		//Add them in the ArrayList to iterate over later
 		plugins.add(say);
@@ -80,6 +86,9 @@ public class CommandPluginImpl implements CommandPlugin {
 		plugins.add(sys);
 		plugins.add(mem);
 		plugins.add(ch);
+		plugins.add(qdb);
+		plugins.add(su);
+		plugins.add(h);
 		
 		for(PluginBase p : plugins) { p.load(bot); }
 	}

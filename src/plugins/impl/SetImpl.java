@@ -173,7 +173,7 @@ public class SetImpl implements Set {
 		if(sendWhat.substring(sendWhat.length()-2, sendWhat.length()).equals("NM")) {
 			bot.sendMessage(channel, sendWhat.substring(0, sendWhat.length()-2));
 		} else { //Otherwise, its a pm
-			bot.sendMessage(sender, sendWhat.substring(0, sendWhat.length()-2));
+			bot.sendNotice(sender, sendWhat.substring(0, sendWhat.length()-2));
 		}
 	}
 	
