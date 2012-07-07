@@ -1,65 +1,58 @@
 package plugins.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.meta.Author;
 
 import org.jibble.pircbot.PircBot;
 
-import plugins.EightBall;
+import plugins.Flirt;
 
 import com.xtouchme.ircbot.BotOptions;
 
 @PluginImplementation
 @Author(name="xTouchMe")
-public class EightBallImpl implements EightBall {
+public class FlirtImpl implements Flirt {
 
 	private ArrayList<String> commandStart = new ArrayList<String>();
 	private PircBot bot = null;
 
 	@Override
 	public void run(String params, String chan, String sender, BotOptions options) {
-		String[] response = {
-				"It is certain",
-			    "It is decidedly so",
-			    "Without a doubt",
-			    "Yes – definitely",
-			    "You may rely on it",
-			    "As I see it, yes",
-			    "Most likely",
-			    "Outlook good",
-			    "Signs point to yes",
-			    "Yes",
-			    "Reply hazy, try again",
-			    "Ask again later",
-			    "Better not tell you now",
-			    "Cannot predict now",
-			    "Concentrate and ask again",
-				"Don't count on it",
-			    "My reply is no",
-			    "My sources say no",
-			    "Outlook not so good",
-			    "Very doubtful" };
 		Random rand = new Random();
+		Scanner sc;
 		
 		String isPM = params.substring(params.length()-2, params.length());
 		String[] line = params.substring(0, params.length()-2).split(" ");
 		
 		if(params.length() <= 0) { error(chan, sender, isPM.equals("PM")); return; }
 		
-		String question = line[0];
+		String person = line[0];
 		for(int n=1; n<line.length; n++) {
-			question += " "+line[n];
+			person += " "+line[n];
 		}
-		if(!line[line.length-1].contains("?")) question += "?";
+		File flirtFile = new File("flirtFile.txt");
+		String slapTemp = "";
+		try {
+			sc = new Scanner(flirtFile);
 		
-		sendAction(chan, sender, "shakes magic 8 ball... \""+question+"\" "+response[rand.nextInt(response.length)]+isPM);
+			while(sc.hasNextLine()) {
+				slapTemp += sc.nextLine()+"\r\n";
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		String flirt[] = slapTemp.split("\r\n");
+		sendAction(chan, sender, "flirts with "+person+"... \""+flirt[rand.nextInt(flirt.length-1)]+"\"");
 	}
 
 	private void error(String channel, String sender, boolean isPM) {
-		sendMessage(channel, sender, "Invalid usage. Usage: '!8ball <question>'"+((isPM)?"PM":"NM"));
+		sendMessage(channel, sender, "Invalid usage. Usage: '!flirt <nick>'"+((isPM)?"PM":"NM"));
 	}
 
 	private void sendMessage(String channel, String sender, String sendWhat) {
