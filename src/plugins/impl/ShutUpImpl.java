@@ -20,13 +20,18 @@ public class ShutUpImpl implements ShutUp {
 	
 	@Override
 	public void run(String params, String chan, String sender, BotOptions options) {
-		if(!options.isSuperAdmin(sender)) { restrictions(chan, sender); return; }
-		options.shouldShutUp(!options.shouldShutUp());
-		sendMessage(chan, sender, ((options.shouldShutUp())?("Shutting up..."+params):("Yay! I can speak again"+params)));
+		boolean isPM = params.substring(params.length()-2, params.length()).equals("PM");
+		if(!options.isAdmin(sender)) { restrictions(chan, sender, isPM); return; }
+		if(options.shouldShutUp()) {
+			sendMessage(chan, sender, "I already am not responding to non-admin command senders");
+			return;
+		}
+		options.shouldShutUp(true);
+		sendMessage(chan, sender, "Shutting up..."+params);
 	}
 
-	private void restrictions(String channel, String sender) {
-		sendMessage(channel, sender, "You don't have enough previliges to perform this task");
+	private void restrictions(String channel, String sender, boolean isPM) {
+		sendMessage(channel, sender, "You don't have enough previliges to perform this task"+((isPM)?"PM":"NM"));
 	}
 	
 	private void sendMessage(String channel, String sender, String sendWhat) {

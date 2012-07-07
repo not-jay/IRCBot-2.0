@@ -23,6 +23,7 @@ import plugins.Say;
 import plugins.Set;
 import plugins.ShutUp;
 import plugins.Slap;
+import plugins.Speak;
 import plugins.SystemInfo;
 
 import com.xtouchme.ircbot.BotOptions;
@@ -75,6 +76,7 @@ public class CommandPluginImpl implements CommandPlugin {
 		QDB qdb = pluginManager.getPlugin(QDB.class);
 		ShutUp su = pluginManager.getPlugin(ShutUp.class);
 		Help h = pluginManager.getPlugin(Help.class);
+		Speak sp = pluginManager.getPlugin(Speak.class);
 		
 		//Add them in the ArrayList to iterate over later
 		plugins.add(say);
@@ -89,6 +91,7 @@ public class CommandPluginImpl implements CommandPlugin {
 		plugins.add(qdb);
 		plugins.add(su);
 		plugins.add(h);
+		plugins.add(sp);
 		
 		for(PluginBase p : plugins) { p.load(bot); }
 	}

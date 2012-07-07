@@ -20,7 +20,7 @@ public class HelpImpl implements Help {
 	
 	@Override
 	public void run(String params, String chan, String sender, BotOptions options) {
-		sendMessage(chan, sender, "Extensive bot help here -- http://git&#46io/xtouchmebot2&#460");
+		sendMessage(chan, sender, "Extensive bot help here -- http://git&#46io/xtouchmebot2.0"+params);
 	}
 
 	private void sendMessage(String channel, String sender, String sendWhat) {
