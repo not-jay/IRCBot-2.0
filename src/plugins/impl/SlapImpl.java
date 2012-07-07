@@ -34,7 +34,7 @@ public class SlapImpl implements Slap {
 			sc = new Scanner(slapFile);
 			while(sc.hasNextLine()) {
 				slapTemp += sc.nextLine()+"\r\n";
-			}
+		}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
