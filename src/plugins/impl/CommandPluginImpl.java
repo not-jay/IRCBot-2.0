@@ -17,11 +17,13 @@ import plugins.Countdown;
 import plugins.DC;
 import plugins.EightBall;
 import plugins.Flirt;
+import plugins.Get;
 import plugins.Google;
 import plugins.Help;
 import plugins.Me;
 import plugins.MemUsage;
 import plugins.QDB;
+import plugins.Restart;
 import plugins.Say;
 import plugins.Set;
 import plugins.ShutUp;
@@ -83,6 +85,8 @@ public class CommandPluginImpl implements CommandPlugin {
 		EightBall ball = pluginManager.getPlugin(EightBall.class);
 		Flirt flirt = pluginManager.getPlugin(Flirt.class);
 		Google google = pluginManager.getPlugin(Google.class);
+		Restart r = pluginManager.getPlugin(Restart.class);
+		Get get = pluginManager.getPlugin(Get.class);
 		
 		//Add them in the ArrayList to iterate over later
 		plugins.add(say);
@@ -101,6 +105,8 @@ public class CommandPluginImpl implements CommandPlugin {
 		plugins.add(ball);
 		plugins.add(flirt);
 		plugins.add(google);
+		plugins.add(r);
+		plugins.add(get);
 		
 		for(PluginBase p : plugins) { p.load(bot); }
 	}
