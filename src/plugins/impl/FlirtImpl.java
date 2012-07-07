@@ -48,7 +48,7 @@ public class FlirtImpl implements Flirt {
 			e.printStackTrace();
 		}
 		String flirt[] = slapTemp.split("\r\n");
-		sendAction(chan, sender, "flirts with "+person+"... \""+flirt[rand.nextInt(flirt.length-1)]+"\"");
+		sendAction(chan, sender, "flirts with "+person+"... \""+flirt[rand.nextInt(flirt.length-1)]+"\""+isPM);
 	}
 
 	private void error(String channel, String sender, boolean isPM) {
