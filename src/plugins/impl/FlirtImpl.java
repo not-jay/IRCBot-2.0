@@ -75,7 +75,7 @@ public class FlirtImpl implements Flirt {
 
 	@Override
 	public void load(PircBot bot) {
-		setCommandStart(new String[] {"speak"});
+		setCommandStart(new String[] {"flirt", "flir", "fli", "fl"});
 		this.bot = bot;
 	}
 	

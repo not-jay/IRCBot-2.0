@@ -82,7 +82,7 @@ public class EightBallImpl implements EightBall {
 
 	@Override
 	public void load(PircBot bot) {
-		setCommandStart(new String[] {"speak"});
+		setCommandStart(new String[] {"8ball", "8b", "8"});
 		this.bot = bot;
 	}
 	
