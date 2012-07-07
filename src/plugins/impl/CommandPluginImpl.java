@@ -15,6 +15,7 @@ import plugins.Choose;
 import plugins.CommandPlugin;
 import plugins.Countdown;
 import plugins.DC;
+import plugins.EightBall;
 import plugins.Help;
 import plugins.Me;
 import plugins.MemUsage;
@@ -77,6 +78,7 @@ public class CommandPluginImpl implements CommandPlugin {
 		ShutUp su = pluginManager.getPlugin(ShutUp.class);
 		Help h = pluginManager.getPlugin(Help.class);
 		Speak sp = pluginManager.getPlugin(Speak.class);
+		EightBall ball = pluginManager.getPlugin(EightBall.class);
 		
 		//Add them in the ArrayList to iterate over later
 		plugins.add(say);
@@ -92,6 +94,7 @@ public class CommandPluginImpl implements CommandPlugin {
 		plugins.add(su);
 		plugins.add(h);
 		plugins.add(sp);
+		plugins.add(ball);
 		
 		for(PluginBase p : plugins) { p.load(bot); }
 	}
