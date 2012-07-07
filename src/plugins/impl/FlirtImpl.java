@@ -28,7 +28,8 @@ public class FlirtImpl implements Flirt {
 		Scanner sc;
 		
 		String isPM = params.substring(params.length()-2, params.length());
-		String[] line = params.substring(0, params.length()-2).split(" ");
+		params = params.substring(0, params.length()-2);
+		String[] line = params.split(" ");
 		
 		if(params.length() <= 0) { error(chan, sender, isPM.equals("PM")); return; }
 		
