@@ -1,6 +1,6 @@
 # IRCBot 2.0 - IRCBot harder
 
-To use bot commands, just type '!<command>', '<bot name> <command>' or '<bot name>, <command>'
+To use bot commands, just type '!\<command\>', '\<bot name\> \<command\>' or '\<bot name\>, \<command\>'
 	
 	For example:
 		xTouchMe: !say test
