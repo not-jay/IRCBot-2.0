@@ -6,9 +6,9 @@ To use bot commands, just type '!<command>', '<bot name> <command>' or '<bot nam
 		xTouchMe: !say test
 		xTouchMeBot: test
 		xTouchMe: xTouchMeBot action dances
-		_xTouchMeBot dances_
+		xTouchMeBot dances
 		xTouchMe: xTouchMeBot, slap everyone
-		_xTouchMeBot steals everyone's cookies. Mwahahahaha!_
+		xTouchMeBot steals everyone's cookies. Mwahahahaha!
 	
 * Will be creating a wiki entry for the bot's commands
 
