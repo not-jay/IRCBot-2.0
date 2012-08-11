@@ -1,6 +1,6 @@
 # IRCBot 2.0 - IRCBot harder
 
-	To use bot commands, just type '!<command>', '<bot name> <command>' or '<bot name>, <command>'
+To use bot commands, just type '!<command>', '<bot name> <command>' or '<bot name>, <command>'
 	
 	For example:
 		xTouchMe: !say test
@@ -12,4 +12,4 @@
 	
 * Will be creating a wiki entry for the bot's commands
 
-### In order to compile and run the bot, you'll need both 'JSPF' and 'PircBot' java libraries
+#### In order to compile the bot for you own usage, you'll need both '[JSPF](http://code.google.com/p/jspf/)' and '[PircBot](http://www.jibble.org/pircbot.php)' java libraries
