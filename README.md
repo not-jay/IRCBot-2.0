@@ -12,4 +12,4 @@ To use bot commands, just type '!\<command\>', '\<bot name\> \<command\>' or '\<
 	
 * Will be creating a wiki entry for the bot's commands
 
-#### In order to compile the bot for you own usage, you'll need both '[JSPF](http://code.google.com/p/jspf/)' and '[PircBot](http://www.jibble.org/pircbot.php)' java libraries
+#### In order to compile the bot for your own usage, you'll need both '[JSPF](http://code.google.com/p/jspf/)' and '[PircBot](http://www.jibble.org/pircbot.php)' java libraries
