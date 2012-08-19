@@ -55,8 +55,8 @@ public class TwitterImpl implements Twitter {
 			sendMessage(chan, sender, "Sorry, this user/account does not exist!"+isPM);
 		} catch(IndexOutOfBoundsException e) {
 			sendMessage(chan, sender,
-					(Integer.parseInt(messages[1])-1 < 0)?"Sorry, I cannot predict the future.":
-					"Sorry, cannot retrieve more than 20 tweets");
+					(Integer.parseInt(messages[1])-1 < 0)?"Sorry, I cannot predict the future."+isPM:
+					"Sorry, cannot retrieve more than 20 tweets"+isPM);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
