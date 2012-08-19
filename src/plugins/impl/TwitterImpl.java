@@ -50,7 +50,7 @@ public class TwitterImpl implements Twitter {
 
 			tweets.remove(0); //Removes the starting "Twitter / *"
 			if(messages.length > 1) { sendMessage(chan, sender, tweets.get(Integer.parseInt(messages[1]))+isPM); }
-			else { sendMessage(chan, sender, tweets.get(0)); }
+			else { sendMessage(chan, sender, tweets.get(0)+isPM); }
 		} catch (FileNotFoundException e) {
 			sendMessage(chan, sender, "Sorry, this user/account does not exist!"+isPM);
 		} catch (Exception e) {
