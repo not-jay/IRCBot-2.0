@@ -49,10 +49,14 @@ public class TwitterImpl implements Twitter {
 			}
 
 			tweets.remove(0); //Removes the starting "Twitter / *"
-			if(messages.length > 1) { sendMessage(chan, sender, tweets.get(Integer.parseInt(messages[1]))+isPM); }
+			if(messages.length > 1) { sendMessage(chan, sender, tweets.get(Integer.parseInt(messages[1])-1)+isPM); }
 			else { sendMessage(chan, sender, tweets.get(0)+isPM); }
 		} catch (FileNotFoundException e) {
 			sendMessage(chan, sender, "Sorry, this user/account does not exist!"+isPM);
+		} catch(IndexOutOfBoundsException e) {
+			sendMessage(chan, sender,
+					(Integer.parseInt(messages[1])-1 < 0)?"Sorry, I cannot predict the future.":
+					"Sorry, cannot retrieve more than 20 tweets");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
