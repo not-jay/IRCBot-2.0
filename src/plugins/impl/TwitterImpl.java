@@ -1,6 +1,7 @@
 package plugins.impl;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,29 +37,26 @@ public class TwitterImpl implements Twitter {
 		try {
 			twitter = new URL("http://twitter.com/statuses/user_timeline/"+messages[0]+".rss");
 			BufferedReader in = new BufferedReader(new InputStreamReader(twitter.openStream()));
-			Pattern error = Pattern.compile("<errors>.*?</errors>");
 			Pattern patternTitle = Pattern.compile("<title>.*?</title>");
 			Matcher matcher;
 
 			String currLine;
 			while((currLine = in.readLine()) != null) {
-				matcher = error.matcher(currLine);
-				if(matcher.find()) {
-					sendMessage(chan, sender, matcher.group().replaceAll("</?error.*?>", "")+isPM);
-					return;
-				}
-				
 				matcher = patternTitle.matcher(currLine);
-				if(matcher.find() && !matcher.group().matches("Twitter / .*?")) {
+				if(matcher.find()) {
 					tweets.add("@"+matcher.group().replaceAll("</?title>", ""));
 				}
 			}
+
+			tweets.remove(0); //Removes the starting "Twitter / *"
+			if(messages.length > 1) { sendMessage(chan, sender, tweets.get(Integer.parseInt(messages[1]))+isPM); }
+			else { sendMessage(chan, sender, tweets.get(0)); }
+		} catch (FileNotFoundException e) {
+			sendMessage(chan, sender, "Sorry, this user/account does not exist!"+isPM);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		if(messages.length > 1) { sendMessage(chan, sender, tweets.get(Integer.parseInt(messages[1]))+isPM); }
-		else { sendMessage(chan, sender, tweets.get(0)); }
 	}
 
 	private void restrictions(String channel, String sender, boolean isPM) {
