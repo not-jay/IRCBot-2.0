@@ -12,6 +12,7 @@ import net.xeoh.plugins.base.impl.PluginManagerFactory;
 import org.jibble.pircbot.PircBot;
 
 import plugins.Choose;
+import plugins.Coin;
 import plugins.CommandPlugin;
 import plugins.Countdown;
 import plugins.DC;
@@ -23,13 +24,13 @@ import plugins.Help;
 import plugins.Me;
 import plugins.MemUsage;
 import plugins.QDB;
-import plugins.Restart;
 import plugins.Say;
 import plugins.Set;
 import plugins.ShutUp;
 import plugins.Slap;
 import plugins.Speak;
 import plugins.SystemInfo;
+import plugins.Twitter;
 
 import com.xtouchme.ircbot.BotOptions;
 
@@ -85,8 +86,9 @@ public class CommandPluginImpl implements CommandPlugin {
 		EightBall ball = pluginManager.getPlugin(EightBall.class);
 		Flirt flirt = pluginManager.getPlugin(Flirt.class);
 		Google google = pluginManager.getPlugin(Google.class);
-		Restart r = pluginManager.getPlugin(Restart.class);
 		Get get = pluginManager.getPlugin(Get.class);
+		Coin coin = pluginManager.getPlugin(Coin.class);
+		Twitter twitter = pluginManager.getPlugin(Twitter.class);
 		
 		//Add them in the ArrayList to iterate over later
 		plugins.add(say);
@@ -105,8 +107,9 @@ public class CommandPluginImpl implements CommandPlugin {
 		plugins.add(ball);
 		plugins.add(flirt);
 		plugins.add(google);
-		plugins.add(r);
 		plugins.add(get);
+		plugins.add(coin);
+		plugins.add(twitter);
 		
 		for(PluginBase p : plugins) { p.load(bot); }
 	}

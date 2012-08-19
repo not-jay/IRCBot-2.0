@@ -23,11 +23,11 @@ public class SpeakImpl implements Speak {
 		boolean isPM = params.substring(params.length()-2, params.length()).equals("PM");
 		if(!options.isAdmin(sender)) { restrictions(chan, sender, isPM); return; }
 		if(!options.shouldShutUp()) {
-			sendMessage(chan, sender, "Currently responding to non-admin command senders");
+			sendMessage(chan, sender, "Currently responding to non-admin command senders, no action taken");
 			return;
 		}
 		options.shouldShutUp(false);
-		sendMessage(chan, sender, "Yay! I can speak again"+params);
+		sendMessage(chan, sender, "Now responding to commands sent by non-bot admins"+params);
 	}
 
 	private void restrictions(String channel, String sender, boolean isPM) {

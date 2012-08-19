@@ -31,6 +31,9 @@ public class FlirtImpl implements Flirt {
 		params = params.substring(0, params.length()-2);
 		String[] line = params.split(" ");
 		
+		boolean isaPM = params.substring(params.length()-2, params.length()).equals("PM");
+		if(!options.isModerator(sender)) { restrictions(chan, sender, isaPM); return; }
+		
 		if(params.length() <= 0) { error(chan, sender, isPM.equals("PM")); return; }
 		
 		String person = line[0];
@@ -52,6 +55,10 @@ public class FlirtImpl implements Flirt {
 		sendAction(chan, sender, "flirts with "+person+"... \""+flirt[rand.nextInt(flirt.length-1)]+"\""+isPM);
 	}
 
+	private void restrictions(String channel, String sender, boolean isPM) {
+		sendMessage(channel, sender, "You don't have enough previliges to perform this task"+((isPM)?"PM":"NM"));
+	}
+	
 	private void error(String channel, String sender, boolean isPM) {
 		sendMessage(channel, sender, "Invalid usage. Usage: '!flirt <nick>'"+((isPM)?"PM":"NM"));
 	}
@@ -59,7 +66,7 @@ public class FlirtImpl implements Flirt {
 	private void sendMessage(String channel, String sender, String sendWhat) {
 		//If its a normal message
 		if(sendWhat.substring(sendWhat.length()-2, sendWhat.length()).equals("NM")) {
-			bot.sendAction(channel, sendWhat.substring(0, sendWhat.length()-2));
+			bot.sendMessage(channel, sendWhat.substring(0, sendWhat.length()-2));
 		} else { //Otherwise, its a pm
 			bot.sendNotice(sender, sendWhat.substring(0, sendWhat.length()-2));
 		}

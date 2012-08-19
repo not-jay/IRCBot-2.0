@@ -13,10 +13,10 @@ import java.util.TimeZone;
 
 public class BotOptions implements java.io.Serializable {
 	
-	private static final long serialVersionUID = 1316118171194822528L;
+	private static final long serialVersionUID = 3951497404843312369L;
 	
 	ArrayList<String> admin;
-	ArrayList<String> owner;
+	ArrayList<String> moderator;
 	ArrayList<String> greetChannels;
 	ArrayList<String> peopleToAvoid;
 	ArrayList<String> peopleToIgnore;
@@ -32,10 +32,10 @@ public class BotOptions implements java.io.Serializable {
 	
 	private BotOptions() {}
 	
-	public static synchronized BotOptions getOptions(String owner, String filename) {
+	public static synchronized BotOptions getOptions(String moderator, String filename) {
 		if(options == null) {
 			options = new BotOptions();
-			options.initialize(owner, filename);
+			options.initialize(moderator, filename);
 		}
 		return options;
 	}
@@ -44,11 +44,11 @@ public class BotOptions implements java.io.Serializable {
 		throw new CloneNotSupportedException();
 	}
 	
-	public void initialize(String owner, String filename) {
+	public void initialize(String moderator, String filename) {
 		admin = new ArrayList<String>();
-		this.owner = new ArrayList<String>();
-		admin.add(owner);
-		this.owner.add(owner);
+		this.moderator = new ArrayList<String>();
+		admin.add(moderator);
+		this.moderator.add(moderator);
 		
 		greetChannels = new ArrayList<String>();
 		peopleToAvoid = new ArrayList<String>();
@@ -68,24 +68,25 @@ public class BotOptions implements java.io.Serializable {
 	}
 	
 	public void load() throws FileNotFoundException {
-		if(!optionsFile.exists()) return;
+		if(!optionsFile.exists()) save();
 		
 		FileInputStream input = new FileInputStream(optionsFile);		
 		try {
 			ObjectInputStream reader = new ObjectInputStream(input);
 			options = (BotOptions)reader.readObject();
-			target.set(year, month, day, hour, minute);
+			System.out.println(setTarget(year, month, day, hour, minute));
 			
 			System.out.println("-- Start of Options --");
 			System.out.println("admin: "+options.admin.toString());
-			System.out.println("owner: "+options.owner.toString());
+			System.out.println("moderator: "+options.moderator.toString());
 			System.out.println("greetChannels: "+options.greetChannels.toString());
 			System.out.println("peopleToAvoid: "+options.peopleToAvoid.toString());
 			System.out.println("peopleToIgnore: "+options.peopleToIgnore.toString());
 			System.out.println("greet: "+options.greet);
 			System.out.println("reconnect: "+options.reconnect);
 			System.out.println("avoid: "+options.avoid);
-			System.out.printf("Target Date: %tB %td, %tY - %tH:%tM %tp%n",target, target, target, target, target, target);
+			System.out.printf("target date: %tB %td, %tY - %tH:%tM %tp%n",target, target, target, target, target, target);
+			System.out.printf("date ints: y:%d m:%d d:%d h:%d min:%d %n", year, month, day, hour, minute);
 			System.out.println("--   Options End   --");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -130,8 +131,8 @@ public class BotOptions implements java.io.Serializable {
 		optionsFile = new File(filename);
 	}
 	
-	public boolean isOwner(String user) {
-		return owner.contains(user);
+	public boolean isModerator(String user) {
+		return moderator.contains(user);
 	}
 
 	public boolean isSuperAdmin(String user) {
@@ -186,13 +187,13 @@ public class BotOptions implements java.io.Serializable {
 		return chans.substring(2);
 	}
 	
-	public String getOwners() {
-		String owners = "";
-		for(String s : owner) {
-			owners += ", "+s;
+	public String getModerators() {
+		String moderators = "";
+		for(String s : moderator) {
+			moderators += ", "+s;
 		}
-		System.out.println(owners.substring(2));
-		return owners.substring(2);
+		System.out.println(moderators.substring(2));
+		return moderators.substring(2);
 	}
 	
 	public String addChan(String channel) {
@@ -208,26 +209,26 @@ public class BotOptions implements java.io.Serializable {
 		return "Channel successfully removed";
 	}
 
-	public String addOwner(String[] nicks) {
-		String newOwners = "";
+	public String addModerator(String[] nicks) {
+		String newModerators = "";
 		for(String s : nicks) {
-			if(addOwner(s).equals("Added "+s+" as owner")) newOwners += ", "+s;
+			if(addModerator(s).equals("Added "+s+" as bot moderator")) newModerators += ", "+s;
 		}
-		if(newOwners.length() == 0) return "Added no one";
-		return "Added "+((newOwners.length() < 2)?newOwners:newOwners.substring(2))+" as owners";
+		if(newModerators.length() == 0) return "Added no one";
+		return "Added "+((newModerators.length() < 2)?newModerators:newModerators.substring(2))+" as bot moderators";
 	}
 	
-	public String addOwner(String nick) {
-		if(owner.contains(nick)) return "User is already an owner";
-		owner.add(nick);
-		return "Added "+nick+" as owner";
+	public String addModerator(String nick) {
+		if(moderator.contains(nick)) return "User is already a bot moderator";
+		moderator.add(nick);
+		return "Added "+nick+" as bot moderator";
 	}
 	
-	public String removeOwner(String nick) {
-		if(!owner.contains(nick)) return "User is already off the list";
+	public String removeModerator(String nick) {
+		if(!moderator.contains(nick)) return "User is already off the list";
 		if(nick.equalsIgnoreCase(admin.get(0))) return "User is running the bot. You cannot remove this user";
-		owner.remove(nick);
-		return "Removed "+nick+" in the owner list";
+		moderator.remove(nick);
+		return "Removed "+nick+" in the bot moderator list";
 	}
 	
 	public boolean shouldIgnore(String user) {
@@ -277,42 +278,43 @@ public class BotOptions implements java.io.Serializable {
 	public String addAdmin(String[] nicks) {
 		String newAdmins = "";
 		for(String s : nicks) {
-			if(addAdmin(s).equals("Added "+s+" as admin")) newAdmins += ", "+s;
+			if(addAdmin(s).equals("Added "+s+" as bot admin")) newAdmins += ", "+s;
 		}
 		if(newAdmins.length() == 0) return "Added no one";
-		return "Added "+((newAdmins.length() < 2)?newAdmins:newAdmins.substring(2))+" as admins";
+		return "Added "+((newAdmins.length() < 2)?newAdmins:newAdmins.substring(2))+" as bot admins";
 	}
 	
 	public String addAdmin(String nick) {
 		if(admin.contains(nick)) return "User is already an admin";
 		admin.add(nick);
-		addOwner(nick);
-		return "Added "+nick+" as admin";
+		addModerator(nick);
+		return "Added "+nick+" as bot admin";
 	}
 	
 	public String removeAdmin(String nick) {
 		if(!admin.contains(nick)) return "User is already off the list";
 		if(nick.equalsIgnoreCase(admin.get(0))) return "User is running the bot. You cannot remove this user";
 		admin.remove(nick);
-		return "Removed "+nick+" in the admin list";
+		return "Removed "+nick+" in the bot admin list";
 	}
 	
 	public String removeAdmin(String[] nicks) {
 		String removedAdmins = "";
 		for (String s : nicks) {
-			if (removeAdmin(s).equals("Removed "+s+" in the admin list")) removedAdmins += ", " + s;
+			if (removeAdmin(s).equals("Removed "+s+" in the bot admin list")) removedAdmins += ", " + s;
 		}
 		if(removedAdmins.length() == 0) return "Removed no one";
-		return "Removed "+((removedAdmins.length() < 2)?removedAdmins:removedAdmins.substring(2))+" as admins";
+		return "Removed "+((removedAdmins.length() < 2)?removedAdmins:removedAdmins.substring(2))+" as bot admins";
 	}
 
-	public String removeOwner(String[] nicks) {
-		String removedOwners = "";
+	public String removeModerator(String[] nicks) {
+		String removedModerators = "";
 		for (String s : nicks) {
-			if (removeOwner(s).equals("Removed "+s+" in the owner list")) removedOwners += ", " + s;
+			if (removeModerator(s).equals("Removed "+s+" in the bot moderator list")) removedModerators += ", " + s;
 		}
-		if(removedOwners.length() == 0) return "Removed no one";
-		return "Removed "+((removedOwners.length() < 2)?removedOwners:removedOwners.substring(2))+" as owners";
+		if(removedModerators.length() == 0) return "Removed no one";
+		return "Removed "+((removedModerators.length() < 2)?removedModerators:removedModerators.substring(2))+
+			   " as bot moderators";
 	}
 	
 	public String removeFromIgnore(String[] nicks) {
@@ -338,6 +340,7 @@ public class BotOptions implements java.io.Serializable {
 	
 	public String calculateTimeDifference() {
 		Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"));
+		target.set(year,  month, day, hour, minute);
 		long milliseconds1 = target.getTimeInMillis();
 		long milliseconds2 = current.getTimeInMillis();
 		long diff = milliseconds1 - milliseconds2;
@@ -354,6 +357,10 @@ public class BotOptions implements java.io.Serializable {
 		result += ((excessMinutes>0)?((excessHours>0&excessMinutes>0)?", ":"")+excessMinutes
 		 	   +  ((excessMinutes>1)?" minutes":" minute"):"");
 		result += " until: Creature Talk starts";
+		if(result.equals(" until: Creature Talk starts")) {
+			result = String.format("Target Date, %tB %td, %tY - %tH:%tM %tp, has been passed",
+								   target, target, target, target, target, target);
+		}
 		return result;
 	}
 	

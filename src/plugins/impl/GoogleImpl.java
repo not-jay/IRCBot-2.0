@@ -33,6 +33,7 @@ public class GoogleImpl implements Google {
 		params = params.substring(0, params.length()-2);
 		
 		if(params.length() <= 0) { error(chan, sender, isPM.equals("PM")); return; }
+		if(!options.isModerator(sender)) { restrictions(chan, sender, isPM.equals("PM")); return; }
 		
 		params = params.replaceAll(" ", "+");
 		try {
@@ -49,16 +50,20 @@ public class GoogleImpl implements Google {
 			resultStr += result.getResponseData().getResults().get(0).getUrl() + " - ";
 			resultStr += Colors.BOLD + result.getResponseData().getResults().get(0).getTitle();
 			resultStr += Colors.NORMAL + ": " + result.getResponseData().getResults().get(0).getContent();
-			resultStr = resultStr.replaceAll("<b>", "\\x02");
-			resultStr = resultStr.replaceAll("</b>", "\\x02");
+			resultStr = resultStr.replaceAll("<b>", "");
+			resultStr = resultStr.replaceAll("</b>", "");
 			resultStr = resultStr.replaceAll("[.]", "&#46");
 			
-			sendMessage(chan, sender, resultStr);
+			sendMessage(chan, sender, resultStr+isPM);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	private void restrictions(String channel, String sender, boolean isPM) {
+		sendMessage(channel, sender, "You don't have enough previliges to perform this task"+((isPM)?"PM":"NM"));
+	}
+	
 	private void error(String channel, String sender, boolean isPM) {
 		sendMessage(channel, sender, "Invalid usage. Usage: '!google <search terms>'"+((isPM)?"PM":"NM"));
 	}
@@ -66,7 +71,7 @@ public class GoogleImpl implements Google {
 	private void sendMessage(String channel, String sender, String sendWhat) {
 		//If its a normal message
 		if(sendWhat.substring(sendWhat.length()-2, sendWhat.length()).equals("NM")) {
-			bot.sendAction(channel, sendWhat.substring(0, sendWhat.length()-2));
+			bot.sendMessage(channel, sendWhat.substring(0, sendWhat.length()-2));
 		} else { //Otherwise, its a pm
 			bot.sendNotice(sender, sendWhat.substring(0, sendWhat.length()-2));
 		}
@@ -99,11 +104,12 @@ public class GoogleImpl implements Google {
 	/**
 	 * Private Inner Class -- GoogleResults
 	 */
+    @SuppressWarnings("unused")
 	private class GoogleResults {
 
 	    private ResponseData responseData;
 	    public ResponseData getResponseData() { return responseData; }
-	    public void setResponseData(ResponseData responseData) { this.responseData = responseData; }
+		public void setResponseData(ResponseData responseData) { this.responseData = responseData; }
 	    public String toString() { return "ResponseData[" + responseData + "]"; }
 
 	    class ResponseData {

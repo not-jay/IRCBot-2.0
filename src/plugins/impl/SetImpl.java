@@ -21,7 +21,7 @@ public class SetImpl implements Set {
 	@Override
 	public void run(String params, String chan, String sender, BotOptions options) {
 		String[] line = params.split(" ");
-		if(!options.isOwner(sender)) { restrictions(chan, sender); return; }
+		if(!options.isModerator(sender)) { restrictions(chan, sender); return; }
 		if(line[0].equalsIgnoreCase("countdown")) {
 			String toRegex = line[1].substring(0, line[1].length()-2);
 			String isPM = line[1].substring(line[1].length()-2, line[1].length());
@@ -121,7 +121,7 @@ public class SetImpl implements Set {
 				}
 			}
 		}
-		if(line[0].equalsIgnoreCase("owner") && line.length >= 2) {
+		if(line[0].equalsIgnoreCase("mod") && line.length >= 2) {
 			if(!options.isAdmin(sender)) {
 				sendMessage(chan, sender, "You don't have enough previliges to perform this task");
 			}
@@ -133,12 +133,12 @@ public class SetImpl implements Set {
 					}
 					String isPM = temp.substring(temp.length()-2, temp.length());
 					String[] toAdd = temp.substring(0, temp.length()-2).split(" ");
-					sendMessage(chan, sender, options.addOwner(toAdd)+isPM);
+					sendMessage(chan, sender, options.addModerator(toAdd)+isPM);
 				}
 				else {
 					String isPM = line[2].substring(line[2].length()-2, line[2].length());
 					String message = line[2].substring(0, line[2].length()-2);
-					sendMessage(chan, sender, options.addOwner(message)+isPM);
+					sendMessage(chan, sender, options.addModerator(message)+isPM);
 				}
 			}
 			if(line[1].equalsIgnoreCase("remove")) {
@@ -149,12 +149,12 @@ public class SetImpl implements Set {
 					}
 					String isPM = temp.substring(temp.length()-2, temp.length());
 					String[] toRemove = temp.substring(0, temp.length()-2).split(" ");
-					sendMessage(chan, sender, options.removeOwner(toRemove)+isPM);
+					sendMessage(chan, sender, options.removeModerator(toRemove)+isPM);
 				}
 				else {
 					String isPM = line[2].substring(line[2].length()-2, line[2].length());
 					String message = line[2].substring(0, line[2].length()-2);
-					sendMessage(chan, sender, options.removeOwner(message)+isPM);
+					sendMessage(chan, sender, options.removeModerator(message)+isPM);
 				}
 			}
 		}
@@ -179,7 +179,7 @@ public class SetImpl implements Set {
 	
 	@Override
 	public void load(PircBot bot) {
-		setCommandStart(new String[] {"set", "se"});
+		setCommandStart(new String[] {"settings", "set", "se"});
 		this.bot = bot;
 	}
 	

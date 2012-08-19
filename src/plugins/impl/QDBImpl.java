@@ -25,6 +25,8 @@ public class QDBImpl implements QDB {
 		String isPM = params.substring(params.length()-2, params.length());
 		params = params.substring(0, params.length()-2);
 		String[] line = params.split(" ");
+
+		if(!options.isModerator(sender)) { restrictions(chan, sender, isPM.equals("PM")); return; }
 		
 		//!quote save
 		if(line[0].equalsIgnoreCase("save")) {
@@ -34,8 +36,9 @@ public class QDBImpl implements QDB {
 		}
 		//!quote remove
 		if(line[0].equalsIgnoreCase("remove")) {
-			if(line.length < 2) { return; }
+			if(line.length < 1) { return; }
 			qdb.removeFromDB(line[1]);
+			sendMessage(chan, sender, "Removed "+line[1]+" from the DB"+isPM);
 			qdb.save();
 			return;
 		}
@@ -48,6 +51,10 @@ public class QDBImpl implements QDB {
 		sendMessage(chan, sender, "Added "+line[0]+" - "+quote+" to the DB"+isPM);
 	}
 
+	private void restrictions(String channel, String sender, boolean isPM) {
+		sendMessage(channel, sender, "You don't have enough previliges to perform this task"+((isPM)?"PM":"NM"));
+	}
+	
 	private void sendMessage(String channel, String sender, String sendWhat) {
 		//If its a normal message
 		if(sendWhat.substring(sendWhat.length()-2, sendWhat.length()).equals("NM")) {

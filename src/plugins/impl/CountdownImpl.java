@@ -20,13 +20,16 @@ public class CountdownImpl implements Countdown {
 	
 	@Override
 	public void run(String params, String chan, String sender, BotOptions options) {
-		if(!options.isOwner(sender)) {
-			sendMessage(chan, sender, "You don't have enough previliges to perform this task"+params);
-			return;
-		}
+		boolean isPM = params.substring(params.length()-2, params.length()).equals("PM");
+		if(!options.isModerator(sender)) { restrictions(chan, sender, isPM); return; }
+
 		sendMessage(chan, sender, options.calculateTimeDifference()+params);
 	}
 
+	private void restrictions(String channel, String sender, boolean isPM) {
+		sendMessage(channel, sender, "You don't have enough previliges to perform this task"+((isPM)?"PM":"NM"));
+	}
+	
 	private void sendMessage(String channel, String sender, String sendWhat) {
 		//If its a normal message
 		if(sendWhat.substring(sendWhat.length()-2, sendWhat.length()).equals("NM")) {

@@ -24,8 +24,8 @@ public class IRCBot extends PircBot {
 	protected void onMessage(String channel, String sender, String login,
 			String hostname, String message) {
 		if(options.shouldIgnore(sender) || (options.shouldShutUp() && !options.isAdmin(sender))) return;
-		if(message.startsWith("?")) {
-			if(!options.isOwner(sender)) {
+		if(message.startsWith("$")) {
+			if(!options.isModerator(sender)) {
 				sendMessage(channel, "You don't have enough previlages to perform this task");
 				return;
 			}
@@ -44,8 +44,8 @@ public class IRCBot extends PircBot {
 	protected void onPrivateMessage(String sender, String login,
 			String hostname, String message) {
 		if(options.shouldIgnore(sender)) return;
-		if(message.startsWith("?")) {
-			if(!options.isOwner(sender)) {
+		if(message.startsWith("$")) {
+			if(!options.isModerator(sender)) {
 				sendNotice(sender, "You don't have enough previlages to perform this task");
 				return;
 			}
@@ -72,6 +72,15 @@ public class IRCBot extends PircBot {
 			String sourceLogin, String sourceHostname, String channel) {
 		joinChannel(channel);
 		sendMessage(channel, "Thanks for the invite, "+sourceNick);
+	}
+
+	@Override
+	protected void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname,
+			String recipientNick, String reason) {
+		if (recipientNick.equalsIgnoreCase(getNick()) && options.reconnect) {
+			joinChannel(channel);
+			sendMessage(channel, "Why would you do that, "+kickerNick+"? ಥ_ಥ");
+		}
 	}
 
 	//Checks if the bot is disconnected, if it is, shut the program down gracefully
@@ -116,6 +125,7 @@ public class IRCBot extends PircBot {
 			e.printStackTrace();
 		}
 		bot.joinChannel((String)botOptions[3]);
+		bot.checkBotShutdown();
 	}
 	
 }

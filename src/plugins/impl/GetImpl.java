@@ -8,6 +8,7 @@ import net.xeoh.plugins.base.annotations.meta.Author;
 import org.jibble.pircbot.PircBot;
 
 import com.xtouchme.ircbot.BotOptions;
+import com.xtouchme.ircbot.QuoteDB;
 
 import plugins.Get;
 
@@ -22,21 +23,25 @@ public class GetImpl implements Get {
 	public void run(String params, String chan, String sender, BotOptions options) {
 		String isPM = params.substring(params.length()-2, params.length());
 		params = params.substring(0, params.length()-2);
+		QuoteDB qdb = QuoteDB.getQuoteDB();
 		
 		if(params.length() <= 0) { error(chan, sender, isPM.equals("PM")); return; }
 		
 		if(params.equalsIgnoreCase("greet"))
-			sendMessage(chan, sender, options.isGreet());
+			sendMessage(chan, sender, options.isGreet()+isPM);
 		if(params.equalsIgnoreCase("reconnect"))
-			sendMessage(chan, sender, options.isReconnect());
+			sendMessage(chan, sender, options.isReconnect()+isPM);
 		if(params.equalsIgnoreCase("greet.channel")) {
-			sendMessage(chan, sender, "These are the channels where I'll greet people: " + options.getChans());
+			sendMessage(chan, sender, "These are the channels where I'll greet people: " + options.getChans()+isPM);
 		}
-		if(params.equalsIgnoreCase("owner")) {
-			sendMessage(chan, sender, "Owners: "+options.getOwners());
+		if(params.equalsIgnoreCase("mod")) {
+			sendMessage(chan, sender, "Bot Moderators: "+options.getModerators()+isPM);
 		}
 		if(params.equalsIgnoreCase("admin")) {
-			sendMessage(chan, sender, "Admins: "+options.getAdmins());
+			sendMessage(chan, sender, "Bot Admins: "+options.getAdmins()+isPM);
+		}
+		if(params.equalsIgnoreCase("quote")) {
+			sendMessage(chan, sender, "Quotes: "+qdb.listKeys()+isPM);
 		}
 	}
 
@@ -47,7 +52,7 @@ public class GetImpl implements Get {
 	private void sendMessage(String channel, String sender, String sendWhat) {
 		//If its a normal message
 		if(sendWhat.substring(sendWhat.length()-2, sendWhat.length()).equals("NM")) {
-			bot.sendAction(channel, sendWhat.substring(0, sendWhat.length()-2));
+			bot.sendMessage(channel, sendWhat.substring(0, sendWhat.length()-2));
 		} else { //Otherwise, its a pm
 			bot.sendNotice(sender, sendWhat.substring(0, sendWhat.length()-2));
 		}
