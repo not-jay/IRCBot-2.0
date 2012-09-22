@@ -26,6 +26,11 @@ public class SlapImpl implements Slap {
 	public void run(String params, String chan, String sender, BotOptions options) {
 		Random rand = new Random();
 		Scanner sc;
+
+		String isPM = params.substring(params.length()-2, params.length());
+		params = params.substring(0, params.length()-2).trim();
+
+		if(params.length() <= 0) { error(chan, sender, isPM.equals("PM")); return; }
 		
 		String init[] = {"slaps", "smacks", "whacks", "donkey punches", "throws", "flicks"};
 		File slapFile = new File("slapFile.txt");
@@ -39,9 +44,31 @@ public class SlapImpl implements Slap {
 			e.printStackTrace();
 		}
 		slapTemp = slapTemp.replace("[verb]", init[rand.nextInt(init.length-1)]);
-		slapTemp = slapTemp.replace("[name]", params.substring(0, params.length()-2));
+		slapTemp = slapTemp.replace("[name]", params);
 		String slap[] = slapTemp.split("\r\n");
-		bot.sendAction(chan, slap[rand.nextInt(slap.length-1)]);
+		sendAction(chan, sender, slap[rand.nextInt(slap.length-1)]+isPM);
+	}
+
+	private void error(String channel, String sender, boolean isPM) {
+		sendMessage(channel, sender, "Invalid usage. Usage: '!slap <name>'"+((isPM)?"PM":"NM"));
+	}
+
+	private void sendMessage(String channel, String sender, String sendWhat) {
+		//If its a normal message
+		if(sendWhat.substring(sendWhat.length()-2, sendWhat.length()).equals("NM")) {
+			bot.sendMessage(channel, sendWhat.substring(0, sendWhat.length()-2));
+		} else { //Otherwise, its a pm
+			bot.sendNotice(sender, sendWhat.substring(0, sendWhat.length()-2));
+		}
+	}
+
+	private void sendAction(String channel, String sender, String sendWhat) {
+		//If its a normal message
+		if(sendWhat.substring(sendWhat.length()-2, sendWhat.length()).equals("NM")) {
+			bot.sendAction(channel, sendWhat.substring(0, sendWhat.length()-2));
+		} else { //Otherwise, its a pm
+			bot.sendNotice(sender, sendWhat.substring(0, sendWhat.length()-2));
+		}
 	}
 
 	@Override

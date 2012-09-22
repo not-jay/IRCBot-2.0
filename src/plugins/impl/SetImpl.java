@@ -22,7 +22,17 @@ public class SetImpl implements Set {
 	public void run(String params, String chan, String sender, BotOptions options) {
 		String[] line = params.split(" ");
 		if(!options.isModerator(sender)) { restrictions(chan, sender); return; }
-		if(line[0].equalsIgnoreCase("countdown")) {
+		if(line[0].equalsIgnoreCase("event") && line.length >= 1) {
+			String eventName = line[1];
+			for(int n=3; n<line.length; n++) {
+				eventName += " "+line[n];
+			}
+			String isPM = eventName.substring(eventName.length()-2, eventName.length());
+			eventName = eventName.substring(0, line[1].length()-2);
+			
+			sendMessage(chan, sender, options.updateEvent(eventName)+isPM);
+		}
+		if(line[0].equalsIgnoreCase("countdown") && line.length >= 2) {
 			String toRegex = line[1].substring(0, line[1].length()-2);
 			String isPM = line[1].substring(line[1].length()-2, line[1].length());
 			

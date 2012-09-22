@@ -25,6 +25,7 @@ public class BotOptions implements java.io.Serializable {
 	boolean avoid;
 	int month, day, year, hour, minute;
 	Calendar target;
+	String eventName;
 	
 	File optionsFile = null;
 	private static BotOptions options = null;
@@ -59,6 +60,8 @@ public class BotOptions implements java.io.Serializable {
 		avoid = false;
 		target = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"));
 		
+		eventName = "Generic Event Name";
+		
 		setFile(filename);
 		try {
 			load();
@@ -87,6 +90,7 @@ public class BotOptions implements java.io.Serializable {
 			System.out.println("avoid: "+options.avoid);
 			System.out.printf("target date: %tB %td, %tY - %tH:%tM %tp%n",target, target, target, target, target, target);
 			System.out.printf("date ints: y:%d m:%d d:%d h:%d min:%d %n", year, month, day, hour, minute);
+			System.out.println("event: "+eventName);
 			System.out.println("--   Options End   --");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -338,6 +342,14 @@ public class BotOptions implements java.io.Serializable {
 							,target, target, target, target, target, target);
 	}
 	
+	public String updateEvent(String newEvent) {
+		if(newEvent.equals(eventName))
+			return "New event name is the same from the last. Event Name unchanged.";
+		
+		eventName = newEvent;
+		return "Event updated to "+newEvent;
+	}
+	
 	public String calculateTimeDifference() {
 		Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"));
 		target.set(year,  month, day, hour, minute);
@@ -356,9 +368,9 @@ public class BotOptions implements java.io.Serializable {
 		if(excessHours<1 && diffDays>1 && excessMinutes>1) result += ", ";
 		result += ((excessMinutes>0)?((excessHours>0&excessMinutes>0)?", ":"")+excessMinutes
 		 	   +  ((excessMinutes>1)?" minutes":" minute"):"");
-		result += " until: Creature Talk starts";
-		if(result.equals(" until: Creature Talk starts")) {
-			result = String.format("Target Date, %tB %td, %tY - %tH:%tM %tp, has been passed",
+		result += " until: "+eventName;
+		if(result.equals(" until: "+eventName)) {
+			result = String.format(eventName+", last %tB %td, %tY - %tH:%tM %tp, has been passed",
 								   target, target, target, target, target, target);
 		}
 		return result;
