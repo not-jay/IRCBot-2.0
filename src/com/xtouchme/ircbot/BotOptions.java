@@ -77,7 +77,7 @@ public class BotOptions implements java.io.Serializable {
 		try {
 			ObjectInputStream reader = new ObjectInputStream(input);
 			options = (BotOptions)reader.readObject();
-			System.out.println(setTarget(year, month, day, hour, minute));
+			System.out.println(setTarget(options.year, options.month, options.day, options.hour, options.minute));
 			
 			System.out.println("-- Start of Options --");
 			System.out.println("admin: "+options.admin.toString());
@@ -88,9 +88,11 @@ public class BotOptions implements java.io.Serializable {
 			System.out.println("greet: "+options.greet);
 			System.out.println("reconnect: "+options.reconnect);
 			System.out.println("avoid: "+options.avoid);
-			System.out.printf("target date: %tB %td, %tY - %tH:%tM %tp%n",target, target, target, target, target, target);
-			System.out.printf("date ints: y:%d m:%d d:%d h:%d min:%d %n", year, month, day, hour, minute);
-			System.out.println("event: "+eventName);
+			System.out.printf("target date: %tB %td, %tY - %tH:%tM %tp%n",options.target, options.target, options.target,
+																		  options.target, options.target, options.target);
+			System.out.printf("date ints: y:%d m:%d d:%d h:%d min:%d %n", options.year, options.month, options.day,
+																		  options.hour, options.minute);
+			System.out.println("event: "+options.eventName);
 			System.out.println("--   Options End   --");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -352,7 +354,6 @@ public class BotOptions implements java.io.Serializable {
 	
 	public String calculateTimeDifference() {
 		Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"));
-		target.set(year,  month, day, hour, minute);
 		long milliseconds1 = target.getTimeInMillis();
 		long milliseconds2 = current.getTimeInMillis();
 		long diff = milliseconds1 - milliseconds2;
