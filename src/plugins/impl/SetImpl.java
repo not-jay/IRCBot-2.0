@@ -24,11 +24,11 @@ public class SetImpl implements Set {
 		if(!options.isModerator(sender)) { restrictions(chan, sender); return; }
 		if(line[0].equalsIgnoreCase("event") && line.length >= 1) {
 			String eventName = line[1];
-			for(int n=3; n<line.length; n++) {
+			for(int n=2; n<line.length; n++) {
 				eventName += " "+line[n];
 			}
 			String isPM = eventName.substring(eventName.length()-2, eventName.length());
-			eventName = eventName.substring(0, line[1].length()-2);
+			eventName = eventName.substring(0, eventName.length()-2);
 			
 			sendMessage(chan, sender, options.updateEvent(eventName)+isPM);
 		}

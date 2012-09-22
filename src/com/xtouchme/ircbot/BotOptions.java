@@ -13,7 +13,7 @@ import java.util.TimeZone;
 
 public class BotOptions implements java.io.Serializable {
 	
-	private static final long serialVersionUID = 3951497404843312369L;
+	private static final long serialVersionUID = 448671760652256083L;
 	
 	ArrayList<String> admin;
 	ArrayList<String> moderator;
