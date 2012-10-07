@@ -133,7 +133,7 @@ public class SetImpl implements Set {
 		}
 		if(line[0].equalsIgnoreCase("mod") && line.length >= 2) {
 			if(!options.isAdmin(sender)) {
-				sendMessage(chan, sender, "You don't have enough previliges to perform this task");
+				sendMessage(chan, sender, "You don't have enough privileges to perform this task");
 			}
 			if(line[1].equalsIgnoreCase("add")) {
 				if(line.length >= 3) {
@@ -175,7 +175,7 @@ public class SetImpl implements Set {
 	}
 
 	private void restrictions(String channel, String sender) {
-		sendMessage(channel, sender, "You don't have enough previliges to perform this task");
+		sendMessage(channel, sender, "You don't have enough privileges to perform this task");
 	}
 	
 	private void sendMessage(String channel, String sender, String sendWhat) {

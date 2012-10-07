@@ -54,7 +54,7 @@ public class CommandPluginImpl implements CommandPlugin {
 			//Separates the unload/reload logic to do it a tad bit easier
 			if(line[0].substring(1).equalsIgnoreCase("reload")) { reloadPlugins(); return; }
 			if(line[0].substring(1).equalsIgnoreCase("unload")) { unloadPlugins(); return; }
-			if(p.checkForCommand(line[0].substring(1))) {
+			if(p.checkForCommand(line[0].substring(1).toLowerCase())) {
 				//The string passed here should be the string minus the "!<command>"
 				p.run(params.substring(("!"+line[0]).length()-1).trim().concat((isPM)?"PM":"NM"), chan, sender, options);
 				return;

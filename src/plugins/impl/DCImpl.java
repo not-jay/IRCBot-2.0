@@ -20,14 +20,14 @@ public class DCImpl implements DC {
 	
 	@Override
 	public void load(PircBot bot) {
-		setCommandStart(new String[] {"disconnect", "dc", "quit"});
+		setCommandStart(new String[] {"disconnect", "dc", "quit", "shutdown"});
 		this.bot = bot;
 	}
 	
 	@Override
 	public void run(String params, String chan, String sender, BotOptions options) {
 		if(!options.isAdmin(sender)) {
-			bot.sendMessage(chan, "You don't have enough previlages to perform this task");
+			bot.sendMessage(chan, "You don't have enough privileges to perform this task");
 			return;
 		}
 		//whether pm or message, it will still say it on the channel

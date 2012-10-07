@@ -33,7 +33,7 @@ public class MeImpl implements Me {
 	}
 
 	private void restrictions(String channel, String sender, boolean isPM) {
-		sendMessage(channel, sender, "You don't have enough previliges to perform this task"+((isPM)?"PM":"NM"));
+		sendMessage(channel, sender, "You don't have enough privileges to perform this task"+((isPM)?"PM":"NM"));
 	}
 	
 	private void sendMessage(String channel, String sender, String sendWhat) {
