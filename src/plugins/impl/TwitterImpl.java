@@ -35,7 +35,7 @@ public class TwitterImpl implements Twitter {
 
 		URL twitter;
 		try {
-			twitter = new URL("http://twitter.com/statuses/user_timeline/"+messages[0]+".rss");
+			twitter = new URL("https://api.twitter.com/1/statuses/user_timeline.rss?screen_name="+messages[0]);
 			BufferedReader in = new BufferedReader(new InputStreamReader(twitter.openStream()));
 			Pattern patternTitle = Pattern.compile("<title>.*?</title>");
 			Matcher matcher;
