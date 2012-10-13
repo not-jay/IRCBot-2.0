@@ -23,7 +23,7 @@ public class ShutUpImpl implements ShutUp {
 		boolean isPM = params.substring(params.length()-2, params.length()).equals("PM");
 		if(!options.isAdmin(sender)) { restrictions(chan, sender, isPM); return; }
 		if(options.shouldShutUp()) {
-			sendMessage(chan, sender, "I am not responding to non-admin command senders already, no action taken.");
+			sendMessage(chan, sender, "I am not responding to non-admin command senders already, no action taken."+((isPM)?"PM":"NM"));
 			return;
 		}
 		options.shouldShutUp(true);

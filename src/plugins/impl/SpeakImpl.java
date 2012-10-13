@@ -23,7 +23,7 @@ public class SpeakImpl implements Speak {
 		boolean isPM = params.substring(params.length()-2, params.length()).equals("PM");
 		if(!options.isAdmin(sender)) { restrictions(chan, sender, isPM); return; }
 		if(!options.shouldShutUp()) {
-			sendMessage(chan, sender, "Currently responding to non-admin command senders, no action taken");
+			sendMessage(chan, sender, "Currently responding to non-admin command senders, no action taken"+((isPM)?"PM":"NM"));
 			return;
 		}
 		options.shouldShutUp(false);

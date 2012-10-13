@@ -44,7 +44,7 @@ public class TwitterImpl implements Twitter {
 			while((currLine = in.readLine()) != null) {
 				matcher = patternTitle.matcher(currLine);
 				if(matcher.find()) {
-					tweets.add("@"+matcher.group().replaceAll("</?title>", ""));
+					tweets.add("@"+matcher.group().replaceAll("</?title>", "").replaceAll("[.]", "&#46"));
 				}
 			}
 
